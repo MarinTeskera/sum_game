@@ -1,6 +1,6 @@
-# fluter_complete_guide
+# sum_game
 
-A new Flutter project.
+A simple game where you have to sum up to a particular number.
 
 ## Getting Started
 
