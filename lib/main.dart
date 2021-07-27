@@ -21,11 +21,19 @@ class _MyAppState extends State<MyApp> {
   Random generator = Random();
 
   int sum = 0;
-  int neededNum = 100;
+  int neededNum = Random().nextInt(150);
   int steps = 0;
 
-  List addedNums = [2, 3, 6];
-  List subtractedNums = [1, 4, 9];
+  List addedNums = [
+    Random().nextInt(10) + 1,
+    Random().nextInt(10) + 1,
+    Random().nextInt(10) + 1
+  ];
+  List subtractedNums = [
+    Random().nextInt(10) + 1,
+    Random().nextInt(10) + 1,
+    Random().nextInt(10) + 1
+  ];
 
   String resetText = 'RESET';
 
@@ -78,16 +86,21 @@ class _MyAppState extends State<MyApp> {
               subtractedNums[i] = sub;
             });
           }
+
+          addedNums.sort();
+          subtractedNums.sort();
         });
   }
 
   @override
   Widget build(BuildContext context) {
+    addedNums.sort();
+    subtractedNums.sort();
     //var questions = ['Question 1', 'Question 2'];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('My First App'),
+          title: Text('Number sum game'),
         ),
         body: Column(
           children: <Widget>[
