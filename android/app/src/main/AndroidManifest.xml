@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fluter_complete_guide">
    <application
-        android:label="fluter_complete_guide"
+        android:label="Sum game"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
