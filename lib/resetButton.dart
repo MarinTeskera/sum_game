@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ResetButton extends StatelessWidget {
-  final Function fn;
-  var text;
+  var fn;
+  final String text;
 
-  ResetButton(this.text, this.fn);
+  ResetButton(this.fn, this.text);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.fromLTRB(30, 30, 30, 10),
+      margin: EdgeInsets.all(70),
       child: ElevatedButton(
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 20),
-        ),
-        onPressed: fn(),
+        onPressed: fn,
+        child: Text(text),
         style: ElevatedButton.styleFrom(primary: Colors.green),
       ),
     );
