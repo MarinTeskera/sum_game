@@ -28,13 +28,13 @@ class _MyAppState extends State<MyApp> {
 
   List addedNums = [
     Random().nextInt(5) + 1,
-    Random().nextInt(5) + 5,
-    Random().nextInt(5) + 10
+    Random().nextInt(5) + 6,
+    Random().nextInt(5) + 11
   ];
   List subtractedNums = [
     Random().nextInt(5) + 1,
-    Random().nextInt(5) + 5,
-    Random().nextInt(5) + 10
+    Random().nextInt(5) + 6,
+    Random().nextInt(5) + 11
   ];
 
   Function addNum(int n) {
@@ -64,15 +64,15 @@ class _MyAppState extends State<MyApp> {
       steps = 0;
       neededNum = generator.nextInt(150);
 
-      addedNums = [
+      List addedNums = [
         Random().nextInt(5) + 1,
-        Random().nextInt(5) + 5,
-        Random().nextInt(5) + 10
+        Random().nextInt(5) + 6,
+        Random().nextInt(5) + 11
       ];
-      subtractedNums = [
+      List subtractedNums = [
         Random().nextInt(5) + 1,
-        Random().nextInt(5) + 5,
-        Random().nextInt(5) + 10
+        Random().nextInt(5) + 6,
+        Random().nextInt(5) + 11
       ];
     });
   }
@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
         body: (isPlaying)
             ? Column(
                 children: <Widget>[
-                  Question('GET TO $neededNum'),
+                  Question('GET TO $neededNum', 28),
                   ...addedNums.map((n) {
                     return NumButton(
                         '+' + n.toString(), addNum, n, Colors.blue);
@@ -108,9 +108,13 @@ class _MyAppState extends State<MyApp> {
                 ],
               )
             : Column(children: <Widget>[
-                Question('Well done!'),
-                Text('It took you $steps steps'),
-                ElevatedButton(onPressed: goBack, child: Text('Play again'))
+                Question('Well done!', 50),
+                Text(
+                  'It took you $steps steps',
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.center,
+                ),
+                ResetButton(goBack, 'Play again'),
               ]),
       ),
     );
