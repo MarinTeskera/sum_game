@@ -19,6 +19,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool isPlaying = true;
   Random generator = Random();
 
   int sum = 0;
@@ -26,24 +27,22 @@ class _MyAppState extends State<MyApp> {
   int steps = 0;
 
   List addedNums = [
-    Random().nextInt(10) + 1,
-    Random().nextInt(10) + 1,
-    Random().nextInt(10) + 1
+    Random().nextInt(5) + 1,
+    Random().nextInt(5) + 5,
+    Random().nextInt(5) + 10
   ];
   List subtractedNums = [
-    Random().nextInt(10) + 1,
-    Random().nextInt(10) + 1,
-    Random().nextInt(10) + 1
+    Random().nextInt(5) + 1,
+    Random().nextInt(5) + 5,
+    Random().nextInt(5) + 10
   ];
-
-  String resetText = 'RESET';
 
   Function addNum(int n) {
     return () => setState(() {
           steps++;
           sum += n;
           if (sum == neededNum) {
-            resetText = 'WELL DONE!';
+            isPlaying = false;
           }
         });
   }
@@ -53,73 +52,66 @@ class _MyAppState extends State<MyApp> {
           steps++;
           sum -= n;
           if (sum == neededNum) {
-            resetText = 'WELL DONE!';
+            isPlaying = false;
           }
         });
   }
 
-  Function resetSum() {
-    return () => setState(() {
-          steps = 0;
-          if (sum == neededNum) {
-            if (generator.nextInt(2) > 0) {
-              neededNum = generator.nextInt(150);
-            } else {
-              neededNum = generator.nextInt(100) * -1;
-            }
-            resetText = 'RESET';
-          }
-          sum = 0;
+  void goBack() {
+    setState(() {
+      isPlaying = true;
+      sum = 0;
+      steps = 0;
+      neededNum = generator.nextInt(150);
 
-          for (var i = 0; i < 3; i++) {
-            var add = generator.nextInt(10) + 1;
-            var sub = generator.nextInt(10) + 1;
-            setState(() {
-              while (addedNums.contains(add)) {
-                add = generator.nextInt(10) + 1;
-              }
-              addedNums[i] = add;
-            });
-            setState(() {
-              while (subtractedNums.contains(sub)) {
-                sub = generator.nextInt(10) + 1;
-              }
-              subtractedNums[i] = sub;
-            });
-          }
-
-          addedNums.sort();
-          subtractedNums.sort();
-        });
+      addedNums = [
+        Random().nextInt(5) + 1,
+        Random().nextInt(5) + 5,
+        Random().nextInt(5) + 10
+      ];
+      subtractedNums = [
+        Random().nextInt(5) + 1,
+        Random().nextInt(5) + 5,
+        Random().nextInt(5) + 10
+      ];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     addedNums.sort();
     subtractedNums.sort();
-    //var questions = ['Question 1', 'Question 2'];
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Number sum game'),
         ),
-        body: Column(
-          children: <Widget>[
-            Question('GET TO $neededNum'),
-            ...addedNums.map((n) {
-              return NumButton('+' + n.toString(), addNum, n, Colors.blue);
-            }).toList(),
-            ...subtractedNums.map((n) {
-              return NumButton('-' + n.toString(), subtractNum, n, Colors.red);
-            }).toList(),
-            ResetButton(resetText, resetSum),
-            SumText('CURRENT SUM: $sum'),
-            Text(
-              'STEPS TAKEN: $steps',
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
-        ),
+        body: (isPlaying)
+            ? Column(
+                children: <Widget>[
+                  Question('GET TO $neededNum'),
+                  ...addedNums.map((n) {
+                    return NumButton(
+                        '+' + n.toString(), addNum, n, Colors.blue);
+                  }).toList(),
+                  ...subtractedNums.map((n) {
+                    return NumButton(
+                        '-' + n.toString(), subtractNum, n, Colors.red);
+                  }).toList(),
+                  /* ResetButton(resetText, resetSum), */
+                  SumText('CURRENT SUM: $sum'),
+                  Text(
+                    'STEPS TAKEN: $steps',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              )
+            : Column(children: <Widget>[
+                Question('Well done!'),
+                Text('It took you $steps steps'),
+                ElevatedButton(onPressed: goBack, child: Text('Play again'))
+              ]),
       ),
     );
   }
