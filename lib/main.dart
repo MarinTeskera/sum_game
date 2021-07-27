@@ -99,7 +99,6 @@ class _MyAppState extends State<MyApp> {
                     return NumButton(
                         '-' + n.toString(), subtractNum, n, Colors.red);
                   }).toList(),
-                  /* ResetButton(resetText, resetSum), */
                   SumText('CURRENT SUM: $sum'),
                   Text(
                     'STEPS TAKEN: $steps',
