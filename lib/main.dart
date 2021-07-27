@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   Random generator = Random();
 
   int sum = 0;
-  int neededNum = Random().nextInt(150);
+  int neededNum = Random().nextInt(150) + 50;
   int steps = 0;
 
   List addedNums = [
@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
       isPlaying = true;
       sum = 0;
       steps = 0;
-      neededNum = generator.nextInt(150);
+      neededNum = generator.nextInt(150) + 50;
 
       List addedNums = [
         Random().nextInt(5) + 1,
