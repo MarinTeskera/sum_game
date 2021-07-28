@@ -6,7 +6,6 @@ import 'package:sum_game/question.dart';
 import 'package:sum_game/resetButton.dart';
 import 'package:sum_game/sumText.dart';
 import 'package:flutter/material.dart';
-//TODO: implement scrollable change
 
 void main() {
   runApp(MyApp());
@@ -34,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   List addedNums = [
     Random().nextInt(5) + 1,
     Random().nextInt(5) + 6,
-    Random().nextInt(5) + 11
+    Random().nextInt(5) + 11,
   ];
   List subtractedNums = [
     Random().nextInt(5) + 1,
@@ -93,7 +92,7 @@ class _MyAppState extends State<MyApp> {
           title: Text('Number sum game'),
         ),
         body: (isPlaying)
-            ? Column(
+            ? ListView(
                 children: <Widget>[
                   Question('GET TO $neededNum', 28),
                   ...addedNums.map((n) {
@@ -105,10 +104,7 @@ class _MyAppState extends State<MyApp> {
                         '-' + n.toString(), subtractNum, n, Colors.red);
                   }).toList(),
                   SumText('CURRENT SUM: $sum'),
-                  Text(
-                    'STEPS TAKEN: $steps',
-                    style: TextStyle(fontSize: 20),
-                  ),
+                  SumText('STEPS TAKEN: $steps'),
                 ],
               )
             : Column(children: <Widget>[
