@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/services.dart';
 import 'package:sum_game/numButton.dart';
 import 'package:sum_game/question.dart';
 import 'package:sum_game/resetButton.dart';
@@ -14,6 +15,10 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return _MyAppState();
   }
 }
@@ -99,7 +104,6 @@ class _MyAppState extends State<MyApp> {
                     return NumButton(
                         '-' + n.toString(), subtractNum, n, Colors.red);
                   }).toList(),
-                  /* ResetButton(resetText, resetSum), */
                   SumText('CURRENT SUM: $sum'),
                   Text(
                     'STEPS TAKEN: $steps',
