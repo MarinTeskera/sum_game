@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NumButton extends StatelessWidget {
-  String text = '';
+  final String text;
   final Function fn;
   final int n;
   var color;
