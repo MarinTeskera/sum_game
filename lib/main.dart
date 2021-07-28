@@ -1,11 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/services.dart';
+import 'package:sum_game/difficultyButton.dart';
 import 'package:sum_game/gameWidget.dart';
-import 'package:sum_game/numButton.dart';
-import 'package:sum_game/question.dart';
-import 'package:sum_game/resetButton.dart';
-import 'package:sum_game/sumText.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,6 +19,34 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool onStartScreen = true;
+  var gameDifficulty;
+  var increment;
+
+  void easyMode() {
+    setState(() {
+      onStartScreen = false;
+      gameDifficulty = 3;
+      increment = 0;
+    });
+  }
+
+  void mediumMode() {
+    setState(() {
+      onStartScreen = false;
+      gameDifficulty = 4;
+      increment = 1;
+    });
+  }
+
+  void hardMode() {
+    setState(() {
+      onStartScreen = false;
+      gameDifficulty = 3;
+      increment = 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +54,39 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('Number sum game'),
         ),
-        body: GameWidget(4),
+        body: (onStartScreen)
+            ? Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(30),
+                child: ListView(
+                  children: <Widget>[
+                    Text(
+                      'Welcome to the sum game!',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Container(margin: EdgeInsets.all(20)),
+                    Text(
+                      'Choose the difficulty:',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(20),
+                    ),
+                    DifficultyButton(easyMode, 'EASY'),
+                    DifficultyButton(mediumMode, 'MEDIUM'),
+                    DifficultyButton(hardMode, 'HARD'),
+                  ],
+                ),
+              )
+            : GameWidget(gameDifficulty, increment,
+                () => setState(() => onStartScreen = true)),
       ),
     );
   }

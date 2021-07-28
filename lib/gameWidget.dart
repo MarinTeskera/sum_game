@@ -9,30 +9,35 @@ import 'numButton.dart';
 
 class GameWidget extends StatefulWidget {
   final int diff;
-  GameWidget(this.diff);
+  final int increment;
+  final Function returnFunction;
+  GameWidget(this.diff, this.increment, this.returnFunction);
 
   @override
-  _GameWidgetState createState() => _GameWidgetState(diff);
+  _GameWidgetState createState() =>
+      _GameWidgetState(diff, increment, returnFunction);
 }
 
 class _GameWidgetState extends State<GameWidget> {
   final int diff;
-  _GameWidgetState(this.diff);
+  final int increment;
+  var returnFunction;
+  _GameWidgetState(this.diff, this.increment, this.returnFunction);
 
   bool isPlaying = true;
 
   int sum = 0;
-  int neededNum = Random().nextInt(150) + 50;
+  int neededNum = Random().nextInt(250) + 50;
   int steps = 0;
 
   List addedNums = [];
   List subtractedNums = [];
 
-  void fillLists(int n) {
+  void fillLists() {
     addedNums = [];
     subtractedNums = [];
 
-    for (var i = 0; i < n; i++) {
+    for (var i = increment; i < diff; i++) {
       int added = Random().nextInt(5) + i * 5 + 1;
       int subtracted = Random().nextInt(5) + i * 5 + 1;
 
@@ -70,25 +75,25 @@ class _GameWidgetState extends State<GameWidget> {
       isPlaying = true;
       sum = 0;
       steps = 0;
-      neededNum = Random().nextInt(150) + 50;
+      neededNum = Random().nextInt(250) + 50;
 
       List addedNums = [];
       List subtractedNums = [];
 
-      fillLists(diff);
+      fillLists();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     if (addedNums.isEmpty) {
-      fillLists(diff);
+      fillLists();
     }
 
     return (isPlaying)
         ? ListView(
             children: <Widget>[
-              Question('GET TO $neededNum', 28),
+              Question('GET TO $neededNum', 24),
               ...addedNums.map((n) {
                 return NumButton('+' + n.toString(), addNum, n, Colors.blue);
               }).toList(),
@@ -98,6 +103,18 @@ class _GameWidgetState extends State<GameWidget> {
               }).toList(),
               SumText('CURRENT SUM: $sum'),
               SumText('STEPS TAKEN: $steps'),
+              Container(margin: EdgeInsets.all(10)),
+              Ink(
+                decoration: const ShapeDecoration(
+                  color: Colors.lightBlue,
+                  shape: CircleBorder(),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.home),
+                  color: Colors.white,
+                  onPressed: returnFunction,
+                ),
+              )
             ],
           )
         : Column(children: <Widget>[
