@@ -22,12 +22,16 @@ class _MyAppState extends State<MyApp> {
   bool onStartScreen = true;
   var gameDifficulty;
   var increment;
+  var minValue;
+  var maxValue;
 
   void easyMode() {
     setState(() {
       onStartScreen = false;
       gameDifficulty = 3;
       increment = 0;
+      minValue = 1;
+      maxValue = 40;
     });
   }
 
@@ -36,6 +40,8 @@ class _MyAppState extends State<MyApp> {
       onStartScreen = false;
       gameDifficulty = 4;
       increment = 1;
+      minValue = 41;
+      maxValue = 59;
     });
   }
 
@@ -44,6 +50,8 @@ class _MyAppState extends State<MyApp> {
       onStartScreen = false;
       gameDifficulty = 3;
       increment = 1;
+      minValue = 101;
+      maxValue = 99;
     });
   }
 
@@ -86,7 +94,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               )
             : GameWidget(gameDifficulty, increment,
-                () => setState(() => onStartScreen = true)),
+                () => setState(() => onStartScreen = true), minValue, maxValue),
       ),
     );
   }

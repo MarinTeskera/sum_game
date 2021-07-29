@@ -11,24 +11,30 @@ class GameWidget extends StatefulWidget {
   final int diff;
   final int increment;
   final Function returnFunction;
-  GameWidget(this.diff, this.increment, this.returnFunction);
+  final int minValue;
+  final int maxValue;
+  GameWidget(this.diff, this.increment, this.returnFunction, this.minValue,
+      this.maxValue);
 
   @override
   _GameWidgetState createState() =>
-      _GameWidgetState(diff, increment, returnFunction);
+      _GameWidgetState(diff, increment, returnFunction, minValue, maxValue);
 }
 
 class _GameWidgetState extends State<GameWidget> {
   final int diff;
   final int increment;
   var returnFunction;
-  _GameWidgetState(this.diff, this.increment, this.returnFunction);
+  final int minValue;
+  final int maxValue;
+  _GameWidgetState(this.diff, this.increment, this.returnFunction,
+      this.minValue, this.maxValue);
 
   bool isPlaying = true;
 
   int sum = 0;
-  int neededNum = Random().nextInt(250) + 50;
   int steps = 0;
+  int neededNum = 0;
 
   List addedNums = [];
   List subtractedNums = [];
@@ -75,10 +81,7 @@ class _GameWidgetState extends State<GameWidget> {
       isPlaying = true;
       sum = 0;
       steps = 0;
-      neededNum = Random().nextInt(250) + 50;
-
-      List addedNums = [];
-      List subtractedNums = [];
+      neededNum = Random().nextInt(maxValue) + minValue;
 
       fillLists();
     });
@@ -87,6 +90,7 @@ class _GameWidgetState extends State<GameWidget> {
   @override
   Widget build(BuildContext context) {
     if (addedNums.isEmpty) {
+      neededNum = Random().nextInt(maxValue) + minValue;
       fillLists();
     }
 
