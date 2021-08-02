@@ -97,7 +97,7 @@ class _GameWidgetState extends State<GameWidget> {
     return (isPlaying)
         ? ListView(
             children: <Widget>[
-              Question('GET TO $neededNum', 24),
+              Question('GET TO $neededNum', 30),
               ...addedNums.map((n) {
                 return NumButton('+' + n.toString(), addNum, n, Colors.blue);
               }).toList(),
