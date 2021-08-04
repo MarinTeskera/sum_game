@@ -10,7 +10,7 @@ class ResetButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.all(70),
+      margin: EdgeInsets.fromLTRB(70, 35, 70, 0),
       child: ElevatedButton(
         onPressed: fn,
         child: Text(text),

@@ -35,9 +35,11 @@ class _GameWidgetState extends State<GameWidget> {
   int sum = 0;
   int steps = 0;
   int neededNum = 0;
+  int minSteps = 0;
 
   List addedNums = [];
   List subtractedNums = [];
+  List moves = [];
 
   void fillLists() {
     addedNums = [];
@@ -84,14 +86,87 @@ class _GameWidgetState extends State<GameWidget> {
       neededNum = Random().nextInt(maxValue) + minValue;
 
       fillLists();
+
+      var devisible = true;
+
+      while (devisible) {
+        neededNum = Random().nextInt(maxValue) + minValue;
+        devisible = false;
+        for (var i = 0; i < addedNums.length; i++) {
+          if (addedNums[i] >= 5 && neededNum % addedNums[i] == 0) {
+            neededNum = Random().nextInt(maxValue) + minValue;
+            devisible = true;
+          }
+        }
+      }
+
+      moves = [];
+
+      for (int i in addedNums) {
+        moves.add(i);
+      }
+      for (int j in subtractedNums) {
+        moves.add(j * -1);
+      }
+
+      setState(() {
+        minSteps = getMinSteps(0, [0]);
+      });
+
+      print(minSteps);
     });
+  }
+
+  int getMinSteps(int totalMoves, List<int> pastSums) {
+    if (pastSums.contains(neededNum)) {
+      print(pastSums);
+      return totalMoves;
+    }
+
+    int bestResult = 1000;
+
+    for (int move in moves) {
+      int newSum = pastSums[pastSums.length - 1] + move;
+      if (((newSum - neededNum).abs() <
+              (pastSums[pastSums.length - 1] - neededNum).abs()) &&
+          (!pastSums.contains(newSum))) {
+        bestResult =
+            min(bestResult, getMinSteps(totalMoves + 1, pastSums + [newSum]));
+      }
+    }
+
+    return bestResult;
   }
 
   @override
   Widget build(BuildContext context) {
     if (addedNums.isEmpty) {
-      neededNum = Random().nextInt(maxValue) + minValue;
       fillLists();
+      var devisible = true;
+
+      while (devisible) {
+        neededNum = Random().nextInt(maxValue) + minValue;
+        devisible = false;
+        for (var i = 0; i < addedNums.length; i++) {
+          if (addedNums[i] > 5 && neededNum % addedNums[i] == 0) {
+            neededNum = Random().nextInt(maxValue) + minValue;
+            devisible = true;
+          }
+        }
+      }
+
+      for (int i in addedNums) {
+        moves.add(i);
+      }
+      for (int j in subtractedNums) {
+        moves.add(j * -1);
+      }
+
+      setState(() {
+        minSteps = getMinSteps(0, [0]);
+      });
+
+      print(minSteps);
     }
 
     return (isPlaying)
@@ -128,7 +203,15 @@ class _GameWidgetState extends State<GameWidget> {
               style: TextStyle(fontSize: 30),
               textAlign: TextAlign.center,
             ),
+            ResetButton(
+                () => setState(() {
+                      isPlaying = true;
+                      sum = 0;
+                      steps = 0;
+                    }),
+                'Retry'),
             ResetButton(goBack, 'Play again'),
+            Text('min steps: $minSteps'),
           ]);
   }
 }
