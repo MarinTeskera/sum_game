@@ -118,18 +118,26 @@ class _GameWidgetState extends State<GameWidget> {
   }
 
   int getMinSteps(int totalMoves, List<int> pastSums) {
+    if (totalMoves > 1000) return totalMoves;
+
     if (pastSums.contains(neededNum)) {
-      print(pastSums);
       return totalMoves;
     }
 
     int bestResult = 1000;
 
     for (int move in moves) {
-      int newSum = pastSums[pastSums.length - 1] + move;
-      if (((newSum - neededNum).abs() <
-              (pastSums[pastSums.length - 1] - neededNum).abs()) &&
-          (!pastSums.contains(newSum))) {
+      int newSum = pastSums[pastSums.length - 1];
+
+      if ((newSum < neededNum && move > 0) ||
+          (newSum > neededNum && move < 0)) {
+        newSum += move;
+      }
+
+      if ((newSum == neededNum) ||
+          (((newSum - neededNum).abs() <
+                  (pastSums[pastSums.length - 1] - neededNum).abs()) &&
+              (!pastSums.contains(newSum)))) {
         bestResult =
             min(bestResult, getMinSteps(totalMoves + 1, pastSums + [newSum]));
       }
@@ -153,6 +161,13 @@ class _GameWidgetState extends State<GameWidget> {
             devisible = true;
           }
         }
+        bool allEven = true;
+        for (var i = 0; i < addedNums.length; i++) {
+          if (addedNums[i] % 2 == 1 || subtractedNums[i] % 2 == 1) {
+            allEven = false;
+          }
+        }
+        if (allEven) devisible = true;
       }
 
       for (int i in addedNums) {
@@ -167,6 +182,7 @@ class _GameWidgetState extends State<GameWidget> {
       });
 
       print(minSteps);
+      print(moves);
     }
 
     return (isPlaying)
@@ -182,7 +198,7 @@ class _GameWidgetState extends State<GameWidget> {
               }).toList(),
               SumText('CURRENT SUM: $sum'),
               SumText('STEPS TAKEN: $steps'),
-              Container(margin: EdgeInsets.all(10)),
+              SizedBox(height: 10),
               Ink(
                 decoration: const ShapeDecoration(
                   color: Colors.lightBlue,
@@ -211,7 +227,20 @@ class _GameWidgetState extends State<GameWidget> {
                     }),
                 'Retry'),
             ResetButton(goBack, 'Play again'),
+            SizedBox(height: 10),
             Text('min steps: $minSteps'),
+            SizedBox(height: 100),
+            Ink(
+              decoration: const ShapeDecoration(
+                color: Colors.lightBlue,
+                shape: CircleBorder(),
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.home),
+                color: Colors.white,
+                onPressed: returnFunction,
+              ),
+            )
           ]);
   }
 }
